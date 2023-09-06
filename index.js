@@ -23,6 +23,7 @@ app.get('/', (req, res) => {
 });
 app.post('/sendMail', async (req, res) => {
     console.log(req.body);
+    try {
     let { companyLogoUrl, appLink, subject, to } = req.body;
 
     // Email Template
@@ -38,7 +39,7 @@ app.post('/sendMail', async (req, res) => {
     let transporter = mailer.createTransport(mailerConfig);
     let info = await transporter.sendMail(
         {
-            from: 'Kunj Kanani',
+            from: 'Ilia Silici',
             to: to.join(','),
             subject: subject,
             html: html,
@@ -52,7 +53,10 @@ app.post('/sendMail', async (req, res) => {
             "msgId": info.messageId 
         },
     );
-});
+} catch(error){
+    console.error(error);
+        res.status(500).send("An error occurred while sending the email.");
+}});
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
